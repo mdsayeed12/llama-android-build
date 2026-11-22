@@ -17,7 +17,7 @@ jobs:
           cmake -S llama.cpp/examples/llama.android/lib/src/main/cpp -B build \
             -DCMAKE_TOOLCHAIN_FILE=$NDK/build/cmake/android.toolchain.cmake \
             -DANDROID_ABI=arm64-v8a \
-            -DANDROID_PLATFORM=android-28 \
+            -DANDROID_PLATFORM=android-30 \
             -DCMAKE_BUILD_TYPE=Release \
             -DBUILD_SHARED_LIBS=ON \
             -DLLAMA_BUILD_COMMON=ON \
