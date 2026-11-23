@@ -1,6 +1,9 @@
 name: build-android
 on: workflow_dispatch
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -38,9 +41,12 @@ jobs:
           find build -name "*.so" -exec cp {} out/jniLibs/arm64-v8a/ \;
           find $ANDROID_NDK_LATEST_HOME -name libomp.so -path "*aarch64*" | head -1 | xargs -I{} cp {} out/jniLibs/arm64-v8a/
           cp -r llama.cpp/examples/llama.android/lib/src/main/java/* out/kotlin/
+          $ANDROID_NDK_LATEST_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip --strip-unneeded out/jniLibs/arm64-v8a/*.so
           ls -la out/jniLibs/arm64-v8a
+          cd out && zip -r ../llama-android.zip .
 
-      - uses: actions/upload-artifact@v4
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
         with:
-          name: llama-android
-          path: out
+          tag_name: v1
+          files: llama-android.zip
